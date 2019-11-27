@@ -6,7 +6,7 @@ import android.view.Gravity
 import com.shengshijie.bright.IDialog
 import com.shengshijie.bright.ILoadDialog
 
-class LoadDialogImpl(context: Context) : ILoadDialog {
+class DefaultLoadDialogImpl(context: Context) : ILoadDialog {
 
     private val loadDialog = ProgressDialog(context).apply {
         window?.setGravity(Gravity.CENTER)
@@ -33,7 +33,7 @@ class LoadDialogImpl(context: Context) : ILoadDialog {
     }
 
     override fun setNegativeable(Negativeable: Boolean) {
-        loadDialog.setNegativeable(Negativeable)
+        loadDialog.setCancelable(Negativeable)
     }
 
     override fun setProgress(progress: Int) {
@@ -41,7 +41,7 @@ class LoadDialogImpl(context: Context) : ILoadDialog {
     }
 
     override fun setOnDismiss(f: (IDialog) -> Unit) {
-        loadDialog.setOnDismissListener { f.invoke(this@LoadDialogImpl) }
+        loadDialog.setOnDismissListener { f.invoke(this@DefaultLoadDialogImpl) }
     }
 
 }

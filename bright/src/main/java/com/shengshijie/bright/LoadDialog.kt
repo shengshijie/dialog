@@ -1,17 +1,22 @@
 package com.shengshijie.bright
 
 import android.content.Context
-import com.shengshijie.bright.impl.LoadDialogImpl
+import com.shengshijie.bright.impl.DefaultLoadDialogImpl
 
 class LoadDialog private constructor(builder: Builder) {
 
-    private var mLoadDialog: ILoadDialog? = LoadDialogImpl(builder.mContext)
+    private var mLoadDialog: ILoadDialog = DefaultLoadDialogImpl(builder.mContext)
     private var mTitle: String? = builder.mTitle
     private var mMessage: String? = builder.mMessage
     private var mIndeterminate: Boolean = builder.mIndeterminate
-    private var mNegativeable: Boolean = builder.mNegativeable
+    private var mCancelable: Boolean = builder.mCancelable
     private var mProgress: Int = builder.mProgress
     private var mOnDismiss: (IDialog) -> Unit = builder.mOnDismiss
+
+    fun setLoadDialogImpl(loadDialog: ILoadDialog): LoadDialog {
+        mLoadDialog = loadDialog
+        return this
+    }
 
     fun setTitle(text: String?): LoadDialog {
         mTitle = text
@@ -28,8 +33,8 @@ class LoadDialog private constructor(builder: Builder) {
         return this
     }
 
-    fun setNegativeable(Negativeable: Boolean): LoadDialog {
-        mNegativeable = Negativeable
+    fun setNegativeable(cancelable: Boolean): LoadDialog {
+        mCancelable = cancelable
         return this
     }
 
@@ -44,19 +49,19 @@ class LoadDialog private constructor(builder: Builder) {
     }
 
     fun show() {
-        mLoadDialog?.apply {
+        mLoadDialog.apply {
             setTitle(mTitle)
             setMessage(mMessage)
             setOnDismiss(mOnDismiss)
             setIndeterminate(mIndeterminate)
-            setNegativeable(mNegativeable)
+            setNegativeable(mCancelable)
             setProgress(mProgress)
             show()
         }
     }
 
     fun dismiss() {
-        mLoadDialog?.dismiss()
+        mLoadDialog.dismiss()
     }
 
     class Builder(context: Context) {
@@ -65,7 +70,7 @@ class LoadDialog private constructor(builder: Builder) {
         var mTitle: String? = null
         var mMessage: String? = null
         var mIndeterminate: Boolean = true
-        var mNegativeable: Boolean = false
+        var mCancelable: Boolean = false
         var mProgress: Int = 0
         var mOnDismiss: (IDialog) -> Unit = {}
 
@@ -84,8 +89,8 @@ class LoadDialog private constructor(builder: Builder) {
             return this
         }
 
-        fun setNegativeable(Negativeable: Boolean): Builder {
-            mNegativeable = Negativeable
+        fun setCancelable(cancelable: Boolean): Builder {
+            mCancelable = cancelable
             return this
         }
 

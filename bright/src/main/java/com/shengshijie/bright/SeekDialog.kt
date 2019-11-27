@@ -1,18 +1,23 @@
 package com.shengshijie.bright
 
 import android.content.Context
-import com.shengshijie.bright.impl.SeekDialogImpl
+import com.shengshijie.bright.impl.DefaultSeekDialogImpl
 
 class SeekDialog private constructor(builder: Builder) {
 
     private var mDefaultProgress: Int = builder.mDefaultProgress
-    private var mSeekDialog: ISeekDialog? = SeekDialogImpl(builder.mContext, mDefaultProgress)
+    private var mSeekDialog: ISeekDialog = DefaultSeekDialogImpl(builder.mContext, mDefaultProgress)
     private var mTitle: String? = builder.mTitle
     private var mPositiveText: String? = builder.mPositiveText
     private var mNegativeText: String? = builder.mNegativeText
     private var mOnClickPositive: (ISeekDialog, index: Int) -> Unit = builder.mOnClickPositive
     private var mOnClickNegative: (ISeekDialog, index: Int) -> Unit = builder.mOnClickNegative
     private var mOnDismiss: (IDialog) -> Unit = builder.mOnDismiss
+
+    fun setSeekDialogImpl(seekDialog: ISeekDialog): SeekDialog {
+        mSeekDialog = seekDialog
+        return this
+    }
 
     fun setPositiveText(text: String?): SeekDialog {
         mPositiveText = text
@@ -68,7 +73,7 @@ class SeekDialog private constructor(builder: Builder) {
     }
 
     fun show() {
-        mSeekDialog?.apply {
+        mSeekDialog.apply {
             setTitle(mTitle)
             setProgress(mDefaultProgress)
             setPositiveButton(mPositiveText, mOnClickPositive)
@@ -79,7 +84,7 @@ class SeekDialog private constructor(builder: Builder) {
     }
 
     fun dismiss() {
-        mSeekDialog?.dismiss()
+        mSeekDialog.dismiss()
     }
 
     class Builder(context: Context) {

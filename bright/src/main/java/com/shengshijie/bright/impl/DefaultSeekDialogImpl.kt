@@ -12,7 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import com.shengshijie.bright.ISeekDialog
 import com.shengshijie.bright.IDialog
 
-class SeekDialogImpl(context: Context, var defaultProgress: Int) : ISeekDialog {
+class DefaultSeekDialogImpl(context: Context, var defaultProgress: Int) : ISeekDialog {
 
     private var seekBar: SeekBar? = null
     private var textView: TextView? = null
@@ -71,18 +71,18 @@ class SeekDialogImpl(context: Context, var defaultProgress: Int) : ISeekDialog {
 
     override fun setPositiveButton(text: String?, f: (ISeekDialog, index: Int) -> Unit) {
         seekDialog.setButton(BUTTON_POSITIVE, text) { _, _ ->
-            f.invoke(this@SeekDialogImpl, defaultProgress)
+            f.invoke(this@DefaultSeekDialogImpl, defaultProgress)
         }
     }
 
     override fun setNegativeButton(text: String?, f: (ISeekDialog, index: Int) -> Unit) {
         seekDialog.setButton(BUTTON_NEGATIVE, text) { _, _ ->
-            f.invoke(this@SeekDialogImpl, defaultProgress)
+            f.invoke(this@DefaultSeekDialogImpl, defaultProgress)
         }
     }
 
     override fun setOnDismiss(f: (IDialog) -> Unit) {
-        seekDialog.setOnDismissListener { f.invoke(this@SeekDialogImpl) }
+        seekDialog.setOnDismissListener { f.invoke(this@DefaultSeekDialogImpl) }
     }
 
     override fun setMessage(message: String?) {

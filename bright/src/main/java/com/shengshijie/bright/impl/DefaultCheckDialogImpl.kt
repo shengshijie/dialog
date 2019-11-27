@@ -8,7 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import com.shengshijie.bright.ICheckDialog
 import com.shengshijie.bright.IDialog
 
-class CheckDialogImpl(context: Context, items: Array<String>?, checkedItems: BooleanArray) : ICheckDialog {
+class DefaultCheckDialogImpl(context: Context, items: Array<String>?, checkedItems: BooleanArray) : ICheckDialog {
 
     private val radioDialog: AlertDialog = AlertDialog.Builder(context)
             .setMultiChoiceItems(items, checkedItems) { _, _, _ -> }
@@ -18,18 +18,18 @@ class CheckDialogImpl(context: Context, items: Array<String>?, checkedItems: Boo
 
     override fun setPositiveButton(text: String?, f: (ICheckDialog) -> Unit) {
         radioDialog.setButton(BUTTON_POSITIVE, text) { _, _ ->
-            f.invoke(this@CheckDialogImpl)
+            f.invoke(this@DefaultCheckDialogImpl)
         }
     }
 
     override fun setNegativeButton(text: String?, f: (ICheckDialog) -> Unit) {
         radioDialog.setButton(BUTTON_NEGATIVE, text) { _, _ ->
-            f.invoke(this@CheckDialogImpl)
+            f.invoke(this@DefaultCheckDialogImpl)
         }
     }
 
     override fun setOnDismiss(f: (IDialog) -> Unit) {
-        radioDialog.setOnDismissListener { f.invoke(this@CheckDialogImpl) }
+        radioDialog.setOnDismissListener { f.invoke(this@DefaultCheckDialogImpl) }
     }
 
     override fun setMessage(message: String?) {

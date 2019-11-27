@@ -14,7 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import com.shengshijie.bright.IDebugDialog
 import com.shengshijie.bright.IDialog
 
-class DebugDialogImpl(context: Context) : IDebugDialog {
+class DefaultDebugDialogImpl(context: Context) : IDebugDialog {
 
     private var textView: TextView? = null
 
@@ -55,15 +55,15 @@ class DebugDialogImpl(context: Context) : IDebugDialog {
             }
 
     override fun setPositiveButton(text: String?, f: (IDebugDialog) -> Unit) {
-        alertDialog.setButton(BUTTON_POSITIVE, text) { _, _ -> f.invoke(this@DebugDialogImpl) }
+        alertDialog.setButton(BUTTON_POSITIVE, text) { _, _ -> f.invoke(this@DefaultDebugDialogImpl) }
     }
 
     override fun setNegativeButton(text: String?, f: (IDebugDialog) -> Unit) {
-        alertDialog.setButton(BUTTON_NEGATIVE, text) { _, _ -> f.invoke(this@DebugDialogImpl) }
+        alertDialog.setButton(BUTTON_NEGATIVE, text) { _, _ -> f.invoke(this@DefaultDebugDialogImpl) }
     }
 
     override fun setOnDismiss(f: (IDialog) -> Unit) {
-        alertDialog.setOnDismissListener { f.invoke(this@DebugDialogImpl) }
+        alertDialog.setOnDismissListener { f.invoke(this@DefaultDebugDialogImpl) }
     }
 
     override fun setMessage(message: String?) {
@@ -76,7 +76,7 @@ class DebugDialogImpl(context: Context) : IDebugDialog {
                     alertDialog.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val mClipData = ClipData.newPlainText("copy", textView?.text)
             cm.setPrimaryClip(mClipData)
-            f.invoke(this@DebugDialogImpl)
+            f.invoke(this@DefaultDebugDialogImpl)
             true
         }
     }

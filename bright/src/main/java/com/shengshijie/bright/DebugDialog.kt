@@ -1,11 +1,11 @@
 package com.shengshijie.bright
 
 import android.content.Context
-import com.shengshijie.bright.impl.DebugDialogImpl
+import com.shengshijie.bright.impl.DefaultDebugDialogImpl
 
 class DebugDialog private constructor(builder: Builder) {
 
-    private var mAlertDialog: IDebugDialog? = DebugDialogImpl(builder.mContext)
+    private var mDebugDialog: IDebugDialog = DefaultDebugDialogImpl(builder.mContext)
     private var mTitle: String? = builder.mTitle
     private var mMessage: String? = builder.mMessage
     private var mPositiveText: String? = builder.mPositiveText
@@ -14,6 +14,11 @@ class DebugDialog private constructor(builder: Builder) {
     private var mOnClickNegative: (IDebugDialog) -> Unit = builder.mOnClickNegative
     private var mOnDismiss: (IDialog) -> Unit = builder.mOnDismiss
     private var mOnCopyMessage: (IDialog) -> Unit = builder.mOnCopyMessage
+
+    fun setDebugDialogImpl(debugDialog: IDebugDialog): DebugDialog {
+        mDebugDialog = debugDialog
+        return this
+    }
 
     fun setPositiveText(text: String?): DebugDialog {
         mPositiveText = text
@@ -68,7 +73,7 @@ class DebugDialog private constructor(builder: Builder) {
     }
 
     fun show() {
-        mAlertDialog?.apply {
+        mDebugDialog.apply {
             setTitle(mTitle)
             setMessage(mMessage)
             setPositiveButton(mPositiveText, mOnClickPositive)
@@ -80,7 +85,7 @@ class DebugDialog private constructor(builder: Builder) {
     }
 
     fun dismiss() {
-        mAlertDialog?.dismiss()
+        mDebugDialog.dismiss()
     }
 
     class Builder(context: Context) {

@@ -1,15 +1,20 @@
 package com.shengshijie.bright
 
 import android.content.Context
-import com.shengshijie.bright.impl.JsonDialogImpl
+import com.shengshijie.bright.impl.DefaultJsonDialogImpl
 
 class JsonDialog private constructor(builder: Builder) {
 
-    private var mJsonDialog: IJsonDialog? = JsonDialogImpl(builder.mContext)
+    private var mJsonDialog: IJsonDialog = DefaultJsonDialogImpl(builder.mContext)
     private var mTitle: String? = builder.mTitle
     private var mMessage: String? = builder.mMessage
     private var mOnCopy: (IJsonDialog) -> Unit = builder.mOnCopy
     private var mOnDismiss: (IDialog) -> Unit = builder.mOnDismiss
+
+    fun setJsonDialogImpl(jsonDialog: IJsonDialog): JsonDialog {
+        mJsonDialog = jsonDialog
+        return this
+    }
 
     fun setOnCopy(listener: (IJsonDialog) -> Unit): JsonDialog {
         mOnCopy = listener
@@ -31,13 +36,8 @@ class JsonDialog private constructor(builder: Builder) {
         return this
     }
 
-    fun refreshMessage(message: String?) {
-        message?.let { mJsonDialog?.setMessage(it) }
-        mJsonDialog?.show()
-    }
-
     fun show() {
-        mJsonDialog?.apply {
+        mJsonDialog.apply {
             setTitle(mTitle)
             setMessage(mMessage)
             setOnCopy(mOnCopy)
@@ -47,7 +47,7 @@ class JsonDialog private constructor(builder: Builder) {
     }
 
     fun dismiss() {
-        mJsonDialog?.dismiss()
+        mJsonDialog.dismiss()
     }
 
     class Builder(context: Context) {

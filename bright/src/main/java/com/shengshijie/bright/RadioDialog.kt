@@ -1,19 +1,24 @@
 package com.shengshijie.bright
 
 import android.content.Context
-import com.shengshijie.bright.impl.RadioDialogImpl
+import com.shengshijie.bright.impl.DefaultRadioDialogImpl
 
 class RadioDialog private constructor(builder: Builder) {
 
     private var mItems: Array<String>? = builder.mItems
     private var mDefaultIndex: Int = builder.mDefaultIndex
-    private var mRadioDialog: IRadioDialog? = RadioDialogImpl(builder.mContext, mItems, mDefaultIndex)
+    private var mRadioDialog: IRadioDialog = DefaultRadioDialogImpl(builder.mContext, mItems, mDefaultIndex)
     private var mTitle: String? = builder.mTitle
     private var mPositiveText: String? = builder.mPositiveText
     private var mNegativeText: String? = builder.mNegativeText
     private var mOnClickPositive: (IRadioDialog, index: Int) -> Unit = builder.mOnClickPositive
     private var mOnClickNegative: (IRadioDialog, index: Int) -> Unit = builder.mOnClickNegative
     private var mOnDismiss: (IDialog) -> Unit = builder.mOnDismiss
+
+    fun setRadioDialogImpl(radioDialog: IRadioDialog): RadioDialog {
+        mRadioDialog = radioDialog
+        return this
+    }
 
     fun setPositiveText(text: String?): RadioDialog {
         mPositiveText = text
@@ -64,7 +69,7 @@ class RadioDialog private constructor(builder: Builder) {
     }
 
     fun show() {
-        mRadioDialog?.apply {
+        mRadioDialog.apply {
             setTitle(mTitle)
             setPositiveButton(mPositiveText, mOnClickPositive)
             setNegativeButton(mNegativeText, mOnClickNegative)
@@ -74,7 +79,7 @@ class RadioDialog private constructor(builder: Builder) {
     }
 
     fun dismiss() {
-        mRadioDialog?.dismiss()
+        mRadioDialog.dismiss()
     }
 
     class Builder(context: Context) {

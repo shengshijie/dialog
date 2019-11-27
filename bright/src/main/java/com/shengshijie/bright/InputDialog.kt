@@ -1,11 +1,11 @@
 package com.shengshijie.bright
 
 import android.content.Context
-import com.shengshijie.bright.impl.InputDialogImpl
+import com.shengshijie.bright.impl.DefaultInputDialogImpl
 
 class InputDialog private constructor(builder: Builder) {
 
-    private var mInputDialog: IInputDialog? = InputDialogImpl(builder.mContext)
+    private var mInputDialog: IInputDialog = DefaultInputDialogImpl(builder.mContext)
     private var mTitle: String? = builder.mTitle
     private var mMessage: String? = builder.mMessage
     private var mPositiveText: String? = builder.mPositiveText
@@ -13,6 +13,11 @@ class InputDialog private constructor(builder: Builder) {
     private var mOnClickPositive: (IInputDialog, text: String?) -> Unit = builder.mOnClickPositive
     private var mOnClickNegative: (IInputDialog, text: String?) -> Unit = builder.mOnClickNegative
     private var mOnDismiss: (IDialog) -> Unit = builder.mOnDismiss
+
+    fun setInputDialogImpl(inputDialog: IInputDialog): InputDialog {
+        mInputDialog = inputDialog
+        return this
+    }
 
     fun setPositiveText(text: String?): InputDialog {
         mPositiveText = text
@@ -61,22 +66,19 @@ class InputDialog private constructor(builder: Builder) {
         return this
     }
 
-    fun refreshMessage(message: String?) {
-        message?.let { mInputDialog?.setMessage(it) }
-        mInputDialog?.show()
-    }
-
     fun show() {
-        mInputDialog?.setTitle(mTitle)
-        mInputDialog?.setMessage(mMessage)
-        mInputDialog?.setPositiveButton(mPositiveText, mOnClickPositive)
-        mInputDialog?.setNegativeButton(mNegativeText, mOnClickNegative)
-        mInputDialog?.setOnDismiss(mOnDismiss)
-        mInputDialog?.show()
+        mInputDialog.apply {
+            setTitle(mTitle)
+            setMessage(mMessage)
+            setPositiveButton(mPositiveText, mOnClickPositive)
+            setNegativeButton(mNegativeText, mOnClickNegative)
+            setOnDismiss(mOnDismiss)
+            show()
+        }
     }
 
     fun dismiss() {
-        mInputDialog?.dismiss()
+        mInputDialog.dismiss()
     }
 
     class Builder(context: Context) {

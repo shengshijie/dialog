@@ -8,7 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import com.shengshijie.bright.IDialog
 import com.shengshijie.bright.IRadioDialog
 
-class RadioDialogImpl(context: Context, items: Array<String>?, defaultIndex: Int) : IRadioDialog {
+class DefaultRadioDialogImpl(context: Context, items: Array<String>?, defaultIndex: Int) : IRadioDialog {
 
     private var index: Int = defaultIndex
 
@@ -21,18 +21,18 @@ class RadioDialogImpl(context: Context, items: Array<String>?, defaultIndex: Int
 
     override fun setPositiveButton(text: String?, f: (IRadioDialog, index: Int) -> Unit) {
         radioDialog.setButton(BUTTON_POSITIVE, text) { _, _ ->
-            f.invoke(this@RadioDialogImpl, index)
+            f.invoke(this@DefaultRadioDialogImpl, index)
         }
     }
 
     override fun setNegativeButton(text: String?, f: (IRadioDialog, index: Int) -> Unit) {
         radioDialog.setButton(BUTTON_NEGATIVE, text) { _, _ ->
-            f.invoke(this@RadioDialogImpl, index)
+            f.invoke(this@DefaultRadioDialogImpl, index)
         }
     }
 
     override fun setOnDismiss(f: (IDialog) -> Unit) {
-        radioDialog.setOnDismissListener { f.invoke(this@RadioDialogImpl) }
+        radioDialog.setOnDismissListener { f.invoke(this@DefaultRadioDialogImpl) }
     }
 
     override fun setMessage(message: String?) {

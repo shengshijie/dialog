@@ -1,18 +1,23 @@
 package com.shengshijie.bright
 
 import android.content.Context
-import com.shengshijie.bright.impl.ListDialogImpl
+import com.shengshijie.bright.impl.DefaultListDialogImpl
 
 class ListDialog private constructor(builder: Builder) {
 
     private var mItems: Array<String>? = builder.mItems
     private var mOnItemClick: (IListDialog, index: Int) -> Unit = builder.mOnItemClick
-    private var mRadioDialog: IListDialog? = ListDialogImpl(builder.mContext, mItems, mOnItemClick)
+    private var mListDialog: IListDialog = DefaultListDialogImpl(builder.mContext, mItems, mOnItemClick)
     private var mTitle: String? = builder.mTitle
     private var mOnDismiss: (IDialog) -> Unit = builder.mOnDismiss
 
+    fun setListDialogImpl(listDialog: IListDialog): ListDialog {
+        mListDialog = listDialog
+        return this
+    }
+
     fun setOnItemClick(
-            listener: (IListDialog, index: Int) -> Unit
+        listener: (IListDialog, index: Int) -> Unit
     ): ListDialog {
         mOnItemClick = listener
         return this
@@ -34,7 +39,7 @@ class ListDialog private constructor(builder: Builder) {
     }
 
     fun show() {
-        mRadioDialog?.apply {
+        mListDialog.apply {
             setTitle(mTitle)
             setOnDismiss(mOnDismiss)
             show()
@@ -42,7 +47,7 @@ class ListDialog private constructor(builder: Builder) {
     }
 
     fun dismiss() {
-        mRadioDialog?.dismiss()
+        mListDialog.dismiss()
     }
 
     class Builder(context: Context) {
@@ -53,7 +58,7 @@ class ListDialog private constructor(builder: Builder) {
         var mOnItemClick: (IListDialog, index: Int) -> Unit = { _, _ -> }
 
         fun setOnItemClick(
-                listener: (IListDialog, index: Int) -> Unit
+            listener: (IListDialog, index: Int) -> Unit
         ): Builder {
             mOnItemClick = listener
             return this

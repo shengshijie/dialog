@@ -1,13 +1,11 @@
 package com.shengshijie.bright
 
 import android.content.Context
-import com.shengshijie.bright.impl.AlertDialogImpl
-import com.shengshijie.bright.IAlertDialog
-import com.shengshijie.bright.IDialog
+import com.shengshijie.bright.impl.DefaultAlertDialogImpl
 
 class AlertDialog private constructor(builder: Builder) {
 
-    private var mAlertDialog: IAlertDialog? = AlertDialogImpl(builder.mContext)
+    private var mAlertDialog: IAlertDialog? = DefaultAlertDialogImpl(builder.mContext)
     private var mTitle: String? = builder.mTitle
     private var mMessage: String? = builder.mMessage
     private var mPositiveText: String? = builder.mPositiveText
@@ -16,6 +14,10 @@ class AlertDialog private constructor(builder: Builder) {
     private var mOnClickNegative: (IAlertDialog) -> Unit = builder.mOnClickNegative
     private var mOnDismiss: (IDialog) -> Unit = builder.mOnDismiss
 
+    fun setIAlertDialogImpl(alertDialog: IAlertDialog): AlertDialog {
+        mAlertDialog = alertDialog
+        return this
+    }
 
     fun setPositiveText(text: String?): AlertDialog {
         mPositiveText = text

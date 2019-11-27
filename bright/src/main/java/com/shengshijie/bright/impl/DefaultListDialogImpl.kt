@@ -1,14 +1,12 @@
 package com.shengshijie.bright.impl
 
 import android.content.Context
-import android.content.DialogInterface.BUTTON_NEGATIVE
-import android.content.DialogInterface.BUTTON_POSITIVE
 import android.view.Gravity
 import androidx.appcompat.app.AlertDialog
 import com.shengshijie.bright.IDialog
 import com.shengshijie.bright.IListDialog
 
-class ListDialogImpl(
+class DefaultListDialogImpl(
         context: Context,
         items: Array<String>?,
         f: (IListDialog, index: Int) -> Unit
@@ -17,12 +15,12 @@ class ListDialogImpl(
     private val radioDialog: AlertDialog = AlertDialog.Builder(context)
             .setItems(
                     items
-            ) { _, which -> f.invoke(this@ListDialogImpl, which) }.create().apply {
+            ) { _, which -> f.invoke(this@DefaultListDialogImpl, which) }.create().apply {
                 window?.setGravity(Gravity.CENTER)
             }
 
     override fun setOnDismiss(f: (IDialog) -> Unit) {
-        radioDialog.setOnDismissListener { f.invoke(this@ListDialogImpl) }
+        radioDialog.setOnDismissListener { f.invoke(this@DefaultListDialogImpl) }
     }
 
     override fun setMessage(message: String?) {

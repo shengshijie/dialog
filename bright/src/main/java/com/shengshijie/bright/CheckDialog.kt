@@ -1,19 +1,24 @@
 package com.shengshijie.bright
 
 import android.content.Context
-import com.shengshijie.bright.impl.CheckDialogImpl
+import com.shengshijie.bright.impl.DefaultCheckDialogImpl
 
 class CheckDialog private constructor(builder: Builder) {
 
     private var mItems: Array<String>? = builder.mItems
     private var mCheckedItems: BooleanArray = builder.mCheckedItems
-    private var mCheckDialog: ICheckDialog? = CheckDialogImpl(builder.mContext, mItems, mCheckedItems)
+    private var mCheckDialog: ICheckDialog = DefaultCheckDialogImpl(builder.mContext, mItems, mCheckedItems)
     private var mTitle: String? = builder.mTitle
     private var mPositiveText: String? = builder.mPositiveText
     private var mNegativeText: String? = builder.mNegativeText
     private var mOnClickPositive: (ICheckDialog) -> Unit = builder.mOnClickPositive
     private var mOnClickNegative: (ICheckDialog) -> Unit = builder.mOnClickNegative
     private var mOnDismiss: (IDialog) -> Unit = builder.mOnDismiss
+
+    fun setCheckDialogImpl(checkDialog: ICheckDialog): CheckDialog {
+        mCheckDialog = checkDialog
+        return this
+    }
 
     fun setPositiveText(text: String?): CheckDialog {
         mPositiveText = text
@@ -74,7 +79,7 @@ class CheckDialog private constructor(builder: Builder) {
     }
 
     fun show() {
-        mCheckDialog?.apply {
+        mCheckDialog.apply {
             setTitle(mTitle)
             setPositiveButton(mPositiveText, mOnClickPositive)
             setNegativeButton(mNegativeText, mOnClickNegative)
@@ -84,7 +89,7 @@ class CheckDialog private constructor(builder: Builder) {
     }
 
     fun dismiss() {
-        mCheckDialog?.dismiss()
+        mCheckDialog.dismiss()
     }
 
     class Builder(context: Context) {

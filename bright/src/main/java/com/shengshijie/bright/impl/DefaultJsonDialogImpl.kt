@@ -14,7 +14,7 @@ import com.dandan.jsonhandleview.library.JsonViewLayout
 import com.shengshijie.bright.IDialog
 import com.shengshijie.bright.IJsonDialog
 
-class JsonDialogImpl(context: Context) : IJsonDialog {
+class DefaultJsonDialogImpl(context: Context) : IJsonDialog {
 
     private var jsonViewLayout: JsonViewLayout? = null
     private var json: String? = ""
@@ -53,12 +53,12 @@ class JsonDialogImpl(context: Context) : IJsonDialog {
                     alertDialog.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val mClipData = ClipData.newPlainText("copy", json)
             cm.setPrimaryClip(mClipData)
-            f.invoke(this@JsonDialogImpl)
+            f.invoke(this@DefaultJsonDialogImpl)
         }
     }
 
     override fun setOnDismiss(f: (IDialog) -> Unit) {
-        alertDialog.setOnDismissListener { f.invoke(this@JsonDialogImpl) }
+        alertDialog.setOnDismissListener { f.invoke(this@DefaultJsonDialogImpl) }
     }
 
     override fun setMessage(message: String?) {
