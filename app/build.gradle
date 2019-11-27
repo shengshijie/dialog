@@ -25,8 +25,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-//    implementation 'com.github.shengshijie:dialog:v1.0.0-beta'
-    implementation project(":bright")
+//    implementation 'com.github.shengshijie:dialog:v1.0.1'
+    implementation project(':dialog')
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.1.0'

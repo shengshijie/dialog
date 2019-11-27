@@ -1,2 +1,2 @@
-include ':app', ':bright'
-rootProject.name='Dialog'
+include ':app', ':dialog'
+rootProject.name='dialogtest'
