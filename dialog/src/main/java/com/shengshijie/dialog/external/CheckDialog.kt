@@ -14,6 +14,7 @@ class CheckDialog private constructor(builder: Builder) {
             builder.mCheckedItems
         )
     var title: String? = builder.mTitle
+    var cancelable: Boolean = builder.mCancelable
     var positiveText: String? = builder.mPositiveText
     var negativeText: String? = builder.mNegativeText
     var onClickPositive: (ICheckDialog) -> Unit = builder.mOnClickPositive
@@ -23,6 +24,7 @@ class CheckDialog private constructor(builder: Builder) {
     fun show() {
         checkDialog.apply {
             setTitle(title)
+            setCancelable(cancelable)
             setPositiveButton(positiveText, onClickPositive)
             setNegativeButton(negativeText, onClickNegative)
             setOnDismiss(onDismiss)
@@ -36,6 +38,8 @@ class CheckDialog private constructor(builder: Builder) {
 
     class Builder(val context: Context) {
         internal var mTitle: String? = null
+            private set
+        internal var mCancelable: Boolean = true
             private set
         internal var mItems: Array<String>? = null
             private set
@@ -104,6 +108,11 @@ class CheckDialog private constructor(builder: Builder) {
 
         fun setTitle(text: String?): Builder {
             mTitle = text
+            return this
+        }
+
+        fun setCancelable(cancelable: Boolean): Builder {
+            mCancelable = cancelable
             return this
         }
 

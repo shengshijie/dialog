@@ -42,7 +42,7 @@ class LoadDialog private constructor(builder: Builder) {
             private set
         internal var mIndeterminate: Boolean = true
             private set
-        internal var mCancelable: Boolean = false
+        internal var mCancelable: Boolean = true
             private set
         internal var mProgress: Int = 0
             private set

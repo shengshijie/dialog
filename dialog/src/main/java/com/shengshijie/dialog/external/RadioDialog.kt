@@ -13,6 +13,7 @@ class RadioDialog private constructor(builder: Builder) {
         builder.mDefaultIndex
     )
     var title: String? = builder.mTitle
+    var cancelable: Boolean = builder.mCancelable
     var positiveText: String? = builder.mPositiveText
     var negativeText: String? = builder.mNegativeText
     var onClickPositive: (IRadioDialog, index: Int) -> Unit = builder.mOnClickPositive
@@ -22,6 +23,7 @@ class RadioDialog private constructor(builder: Builder) {
     fun show() {
         mRadioDialog.apply {
             setTitle(title)
+            setCancelable(cancelable)
             setPositiveButton(positiveText, onClickPositive)
             setNegativeButton(negativeText, onClickNegative)
             setOnDismiss(onDismiss)
@@ -36,6 +38,8 @@ class RadioDialog private constructor(builder: Builder) {
     class Builder(val context: Context) {
 
         internal var mTitle: String? = null
+            private set
+        internal var mCancelable: Boolean = true
             private set
         internal var mItems: Array<String>? = null
             private set
@@ -104,6 +108,11 @@ class RadioDialog private constructor(builder: Builder) {
 
         fun setTitle(text: String?): Builder {
             mTitle = text
+            return this
+        }
+
+        fun setCancelable(cancelable: Boolean): Builder {
+            mCancelable = cancelable
             return this
         }
 

@@ -13,11 +13,13 @@ class ListDialog private constructor(builder: Builder) {
         builder.mOnItemClick
     )
     var title: String? = builder.mTitle
+    var cancelable: Boolean = builder.mCancelable
     var onDismiss: (IDialog) -> Unit = builder.mOnDismiss
 
     fun show() {
         mListDialog.apply {
             setTitle(title)
+            setCancelable(cancelable)
             setOnDismiss(onDismiss)
             show()
         }
@@ -29,6 +31,8 @@ class ListDialog private constructor(builder: Builder) {
 
     class Builder(val context: Context) {
         internal var mTitle: String? = null
+            private set
+        internal var mCancelable: Boolean = true
             private set
         internal var mItems: Array<String>? = null
             private set
@@ -58,6 +62,11 @@ class ListDialog private constructor(builder: Builder) {
 
         fun setTitle(text: String?): Builder {
             mTitle = text
+            return this
+        }
+
+        fun setCancelable(cancelable: Boolean): Builder {
+            mCancelable = cancelable
             return this
         }
 

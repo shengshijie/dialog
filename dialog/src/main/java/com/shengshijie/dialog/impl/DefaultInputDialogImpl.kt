@@ -33,6 +33,10 @@ class DefaultInputDialogImpl(context: Context) :
         alertDialog.setMessage(message)
     }
 
+    override fun setCancelable(cancelable: Boolean) {
+        alertDialog.setCancelable(cancelable)
+    }
+
     override fun show() {
         alertDialog.show()
     }

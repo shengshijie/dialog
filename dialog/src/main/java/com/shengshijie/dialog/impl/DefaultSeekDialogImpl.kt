@@ -90,6 +90,10 @@ class DefaultSeekDialogImpl(context: Context, var defaultProgress: Int) :
         seekDialog.setMessage(message)
     }
 
+    override fun setCancelable(cancelable: Boolean) {
+        seekDialog.setCancelable(cancelable)
+    }
+
     override fun show() {
         seekDialog.show()
     }

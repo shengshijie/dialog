@@ -37,6 +37,10 @@ class DefaultCheckDialogImpl(context: Context, items: Array<String>?, checkedIte
         radioDialog.setMessage(message)
     }
 
+    override fun setCancelable(cancelable: Boolean) {
+        radioDialog.setCancelable(cancelable)
+    }
+
     override fun show() {
         radioDialog.show()
     }

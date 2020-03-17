@@ -3,7 +3,7 @@ package com.shengshijie.dialogtest
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.shengshijie.dialog.external.SeekDialog
+import com.shengshijie.dialog.external.InputDialog
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,8 +13,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun test(view: View) {
-        val dialog = SeekDialog.Builder(this)
-            .setDefaultProgress(30)
+        val dialog = InputDialog.Builder(this)
+            .setTitle("hehe")
+            .setMessage("dd")
+            .setCancelable(false)
             .create()
         dialog.title = "d"
         dialog.show()

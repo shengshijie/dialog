@@ -82,6 +82,10 @@ class DefaultDebugDialogImpl(context: Context) :
         }
     }
 
+    override fun setCancelable(cancelable: Boolean) {
+        alertDialog.setCancelable(cancelable)
+    }
+
     override fun show() {
         alertDialog.show()
     }
