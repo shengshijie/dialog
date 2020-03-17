@@ -7,6 +7,7 @@ import android.view.Gravity
 import androidx.appcompat.app.AlertDialog
 import com.shengshijie.dialog.idialog.IAlertDialog
 import com.shengshijie.dialog.idialog.IDialog
+import java.lang.reflect.Field
 
 class DefaultAlertDialogImpl(context: Context) :
     IAlertDialog {
@@ -37,6 +38,16 @@ class DefaultAlertDialogImpl(context: Context) :
     }
 
     override fun show() {
+        try {
+            var field: Field? = alertDialog.javaClass.getDeclaredField("mAlert")
+            field?.isAccessible = true
+            val obj: Any? = field?.get(alertDialog)
+            field = obj?.javaClass?.getDeclaredField("mHandler")
+            field?.isAccessible = true
+            field?.set(obj, ButtonHandler(alertDialog))
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         alertDialog. show()
     }
 

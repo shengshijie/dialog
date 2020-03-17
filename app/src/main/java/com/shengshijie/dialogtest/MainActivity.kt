@@ -2,6 +2,7 @@ package com.shengshijie.dialogtest
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.shengshijie.dialog.external.InputDialog
 
@@ -17,8 +18,12 @@ class MainActivity : AppCompatActivity() {
             .setTitle("hehe")
             .setMessage("dd")
             .setCancelable(false)
+            .setOnClickPositive { dialog, text ->
+                Toast.makeText(this, text, Toast.LENGTH_LONG).show()
+                dialog.dismiss()
+            }
             .create()
-        dialog.title = "d"
-        dialog.show()
+            .show()
+
     }
 }

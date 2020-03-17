@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.shengshijie.dialog.idialog.IDebugDialog
 import com.shengshijie.dialog.idialog.IDialog
+import java.lang.reflect.Field
 
 class DefaultDebugDialogImpl(context: Context) :
     IDebugDialog {
@@ -50,21 +51,21 @@ class DefaultDebugDialogImpl(context: Context) :
         })
     }
 
-    private val alertDialog: AlertDialog =
+    private val debugDialog: AlertDialog =
             AlertDialog.Builder(context).setView(linearLayout).create().apply {
                 window?.setGravity(Gravity.CENTER)
             }
 
     override fun setPositiveButton(text: String?, f: (IDebugDialog) -> Unit) {
-        alertDialog.setButton(BUTTON_POSITIVE, text) { _, _ -> f.invoke(this@DefaultDebugDialogImpl) }
+        debugDialog.setButton(BUTTON_POSITIVE, text) { _, _ -> f.invoke(this@DefaultDebugDialogImpl) }
     }
 
     override fun setNegativeButton(text: String?, f: (IDebugDialog) -> Unit) {
-        alertDialog.setButton(BUTTON_NEGATIVE, text) { _, _ -> f.invoke(this@DefaultDebugDialogImpl) }
+        debugDialog.setButton(BUTTON_NEGATIVE, text) { _, _ -> f.invoke(this@DefaultDebugDialogImpl) }
     }
 
     override fun setOnDismiss(f: (IDialog) -> Unit) {
-        alertDialog.setOnDismissListener { f.invoke(this@DefaultDebugDialogImpl) }
+        debugDialog.setOnDismissListener { f.invoke(this@DefaultDebugDialogImpl) }
     }
 
     override fun setMessage(message: String?) {
@@ -74,7 +75,7 @@ class DefaultDebugDialogImpl(context: Context) :
     override fun setOnCopyMessage(f: (IDebugDialog) -> Unit) {
         textView?.setOnLongClickListener {
             val cm =
-                    alertDialog.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    debugDialog.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val mClipData = ClipData.newPlainText("copy", textView?.text)
             cm.setPrimaryClip(mClipData)
             f.invoke(this@DefaultDebugDialogImpl)
@@ -83,19 +84,29 @@ class DefaultDebugDialogImpl(context: Context) :
     }
 
     override fun setCancelable(cancelable: Boolean) {
-        alertDialog.setCancelable(cancelable)
+        debugDialog.setCancelable(cancelable)
     }
 
     override fun show() {
-        alertDialog.show()
+        try {
+            var field: Field? = debugDialog.javaClass.getDeclaredField("mAlert")
+            field?.isAccessible = true
+            val obj: Any? = field?.get(debugDialog)
+            field = obj?.javaClass?.getDeclaredField("mHandler")
+            field?.isAccessible = true
+            field?.set(obj, ButtonHandler(debugDialog))
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        debugDialog.show()
     }
 
     override fun dismiss() {
-        alertDialog.dismiss()
+        debugDialog.dismiss()
     }
 
     override fun setTitle(title: String?) {
-        alertDialog.setTitle(title)
+        debugDialog.setTitle(title)
     }
 
 }

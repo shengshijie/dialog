@@ -7,6 +7,7 @@ import android.view.Gravity
 import androidx.appcompat.app.AlertDialog
 import com.shengshijie.dialog.idialog.IDialog
 import com.shengshijie.dialog.idialog.IRadioDialog
+import java.lang.reflect.Field
 
 class DefaultRadioDialogImpl(context: Context, items: Array<String>?, defaultIndex: Int) :
     IRadioDialog {
@@ -45,6 +46,16 @@ class DefaultRadioDialogImpl(context: Context, items: Array<String>?, defaultInd
     }
 
     override fun show() {
+        try {
+            var field: Field? = radioDialog.javaClass.getDeclaredField("mAlert")
+            field?.isAccessible = true
+            val obj: Any? = field?.get(radioDialog)
+            field = obj?.javaClass?.getDeclaredField("mHandler")
+            field?.isAccessible = true
+            field?.set(obj, ButtonHandler(radioDialog))
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         radioDialog.show()
     }
 

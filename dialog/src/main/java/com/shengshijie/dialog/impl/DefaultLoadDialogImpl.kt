@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.Gravity
 import com.shengshijie.dialog.idialog.IDialog
 import com.shengshijie.dialog.idialog.ILoadDialog
+import java.lang.reflect.Field
 
 class DefaultLoadDialogImpl(context: Context) :
     ILoadDialog {
@@ -18,6 +19,16 @@ class DefaultLoadDialogImpl(context: Context) :
     }
 
     override fun show() {
+        try {
+            var field: Field? = loadDialog.javaClass.getDeclaredField("mAlert")
+            field?.isAccessible = true
+            val obj: Any? = field?.get(loadDialog)
+            field = obj?.javaClass?.getDeclaredField("mHandler")
+            field?.isAccessible = true
+            field?.set(obj, ButtonHandler(loadDialog))
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         loadDialog.show()
     }
 
