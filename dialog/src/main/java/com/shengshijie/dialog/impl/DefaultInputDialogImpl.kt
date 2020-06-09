@@ -17,6 +17,10 @@ class DefaultInputDialogImpl(context: Context) :
         window?.setGravity(Gravity.CENTER)
     }
 
+    override fun setInput(input: String?) {
+        editText.setText(input)
+    }
+
     override fun setPositiveButton(text: String?, f: (IInputDialog, text: String?) -> Unit) {
         alertDialog.setButton(BUTTON_POSITIVE, text) { _, _ -> f.invoke(this@DefaultInputDialogImpl, editText.text.toString()) }
     }

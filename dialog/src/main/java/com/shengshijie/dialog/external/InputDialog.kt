@@ -7,9 +7,11 @@ import com.shengshijie.dialog.impl.DefaultInputDialogImpl
 
 class InputDialog private constructor(builder: Builder) {
 
-    private var inputDialog: IInputDialog = builder.mInputDialog?:DefaultInputDialogImpl(builder.context)
+    private var inputDialog: IInputDialog =
+        builder.mInputDialog ?: DefaultInputDialogImpl(builder.context)
     var title: String? = builder.mTitle
     var message: String? = builder.mMessage
+    var input: String? = builder.mInput
     var positiveText: String? = builder.mPositiveText
     var negativeText: String? = builder.mNegativeText
     var onClickPositive: (IInputDialog, text: String?) -> Unit = builder.mOnClickPositive
@@ -20,6 +22,7 @@ class InputDialog private constructor(builder: Builder) {
         inputDialog.apply {
             setTitle(title)
             setMessage(message)
+            setInput(input)
             setPositiveButton(positiveText, onClickPositive)
             setNegativeButton(negativeText, onClickNegative)
             setOnDismiss(onDismiss)
@@ -37,6 +40,8 @@ class InputDialog private constructor(builder: Builder) {
         internal var mTitle: String? = null
             private set
         internal var mMessage: String? = null
+            private set
+        internal var mInput: String? = null
             private set
         internal var mPositiveText: String? = "Positive"
             private set
@@ -98,6 +103,11 @@ class InputDialog private constructor(builder: Builder) {
 
         fun setMessage(text: String?): Builder {
             mMessage = text
+            return this
+        }
+
+        fun setInput(input: String?): Builder {
+            mInput = input
             return this
         }
 
