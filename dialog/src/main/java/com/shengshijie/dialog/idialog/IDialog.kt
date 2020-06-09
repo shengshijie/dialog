@@ -6,6 +6,8 @@ interface IDialog {
 
     fun setMessage(message: String?)
 
+    fun setCancelable(cancelable:Boolean)
+
     fun show()
 
     fun dismiss()

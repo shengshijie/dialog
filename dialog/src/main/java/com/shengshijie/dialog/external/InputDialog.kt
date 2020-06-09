@@ -12,6 +12,7 @@ class InputDialog private constructor(builder: Builder) {
     var title: String? = builder.mTitle
     var message: String? = builder.mMessage
     var input: String? = builder.mInput
+    var cancelable: Boolean = builder.mCancelable
     var positiveText: String? = builder.mPositiveText
     var negativeText: String? = builder.mNegativeText
     var onClickPositive: (IInputDialog, text: String?) -> Unit = builder.mOnClickPositive
@@ -23,6 +24,7 @@ class InputDialog private constructor(builder: Builder) {
             setTitle(title)
             setMessage(message)
             setInput(input)
+            setCancelable(cancelable)
             setPositiveButton(positiveText, onClickPositive)
             setNegativeButton(negativeText, onClickNegative)
             setOnDismiss(onDismiss)
@@ -42,6 +44,8 @@ class InputDialog private constructor(builder: Builder) {
         internal var mMessage: String? = null
             private set
         internal var mInput: String? = null
+            private set
+        internal var mCancelable: Boolean = true
             private set
         internal var mPositiveText: String? = "Positive"
             private set
@@ -108,6 +112,11 @@ class InputDialog private constructor(builder: Builder) {
 
         fun setInput(input: String?): Builder {
             mInput = input
+            return this
+        }
+
+        fun setCancelable(cancelable: Boolean): Builder {
+            mCancelable = cancelable
             return this
         }
 

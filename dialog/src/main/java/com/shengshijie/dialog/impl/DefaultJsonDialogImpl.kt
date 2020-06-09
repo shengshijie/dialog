@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import com.dandan.jsonhandleview.library.JsonViewLayout
 import com.shengshijie.dialog.idialog.IDialog
 import com.shengshijie.dialog.idialog.IJsonDialog
+import java.lang.reflect.Field
 
 class DefaultJsonDialogImpl(context: Context) :
     IJsonDialog {
@@ -43,15 +44,15 @@ class DefaultJsonDialogImpl(context: Context) :
         })
     }
 
-    private val alertDialog: AlertDialog =
+    private val jsonDialog: AlertDialog =
             AlertDialog.Builder(context).setView(linearLayout).create().apply {
                 window?.setGravity(Gravity.CENTER)
             }
 
     override fun setOnCopy(f: (IJsonDialog) -> Unit) {
-        alertDialog.setButton(BUTTON_POSITIVE, "复制") { _, _ ->
+        jsonDialog.setButton(BUTTON_POSITIVE, "复制") { _, _ ->
             val cm =
-                    alertDialog.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    jsonDialog.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val mClipData = ClipData.newPlainText("copy", json)
             cm.setPrimaryClip(mClipData)
             f.invoke(this@DefaultJsonDialogImpl)
@@ -59,7 +60,7 @@ class DefaultJsonDialogImpl(context: Context) :
     }
 
     override fun setOnDismiss(f: (IDialog) -> Unit) {
-        alertDialog.setOnDismissListener { f.invoke(this@DefaultJsonDialogImpl) }
+        jsonDialog.setOnDismissListener { f.invoke(this@DefaultJsonDialogImpl) }
     }
 
     override fun setMessage(message: String?) {
@@ -71,16 +72,30 @@ class DefaultJsonDialogImpl(context: Context) :
         }
     }
 
+    override fun setCancelable(cancelable: Boolean) {
+        jsonDialog.setCancelable(cancelable)
+    }
+
     override fun show() {
-        alertDialog.show()
+        try {
+            var field: Field? = jsonDialog.javaClass.getDeclaredField("mAlert")
+            field?.isAccessible = true
+            val obj: Any? = field?.get(jsonDialog)
+            field = obj?.javaClass?.getDeclaredField("mHandler")
+            field?.isAccessible = true
+            field?.set(obj, ButtonHandler(jsonDialog))
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        jsonDialog.show()
     }
 
     override fun dismiss() {
-        alertDialog.dismiss()
+        jsonDialog.dismiss()
     }
 
     override fun setTitle(title: String?) {
-        alertDialog.setTitle(title)
+        jsonDialog.setTitle(title)
     }
 
 }

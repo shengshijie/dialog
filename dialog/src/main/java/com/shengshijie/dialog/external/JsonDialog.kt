@@ -10,6 +10,7 @@ class JsonDialog private constructor(builder: Builder) {
     private var jsonDialog: IJsonDialog = builder.mJsonDialog?:DefaultJsonDialogImpl(builder.context)
     var title: String? = builder.mTitle
     var message: String? = builder.mMessage
+    var cancelable: Boolean = builder.mCancelable
     var onCopy: (IJsonDialog) -> Unit = builder.mOnCopy
     var onDismiss: (IDialog) -> Unit = builder.mOnDismiss
 
@@ -17,6 +18,7 @@ class JsonDialog private constructor(builder: Builder) {
         jsonDialog.apply {
             setTitle(title)
             setMessage(message)
+            setCancelable(cancelable)
             setOnCopy(onCopy)
             setOnDismiss(onDismiss)
             show()
@@ -33,6 +35,8 @@ class JsonDialog private constructor(builder: Builder) {
         internal var mTitle: String? = null
             private set
         internal var mMessage: String? = null
+            private set
+        internal var mCancelable: Boolean = true
             private set
         internal var mOnCopy: (IJsonDialog) -> Unit = {}
             private set
@@ -61,6 +65,11 @@ class JsonDialog private constructor(builder: Builder) {
 
         fun setMessage(text: String?): Builder {
             mMessage = text
+            return this
+        }
+
+        fun setCancelable(cancelable: Boolean): Builder {
+            mCancelable = cancelable
             return this
         }
 

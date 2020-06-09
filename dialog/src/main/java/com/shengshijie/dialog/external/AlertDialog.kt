@@ -10,6 +10,7 @@ class AlertDialog private constructor(builder: Builder) {
     private var alertDialog: IAlertDialog = builder.mAlertDialog ?: DefaultAlertDialogImpl(builder.context)
     var title: String? = builder.mTitle
     var message: String? = builder.mMessage
+    var cancelable: Boolean = builder.mCancelable
     var positiveText: String? = builder.mPositiveText
     var negativeText: String? = builder.mNegativeText
     var onClickPositive: (IAlertDialog) -> Unit = builder.mOnClickPositive
@@ -20,6 +21,7 @@ class AlertDialog private constructor(builder: Builder) {
         alertDialog.apply {
             setTitle(title)
             setMessage(message)
+            setCancelable(cancelable)
             setPositiveButton(positiveText, onClickPositive)
             setNegativeButton(negativeText, onClickNegative)
             setOnDismiss(onDismiss)
@@ -37,6 +39,8 @@ class AlertDialog private constructor(builder: Builder) {
         internal var mTitle: String? = null
             private set
         internal var mMessage: String? = null
+            private set
+        internal var mCancelable: Boolean = true
             private set
         internal var mPositiveText: String? = "Positive"
             private set
@@ -98,6 +102,11 @@ class AlertDialog private constructor(builder: Builder) {
 
         fun setMessage(text: String?): Builder {
             mMessage = text
+            return this
+        }
+
+        fun setCancelable(cancelable: Boolean): Builder {
+            mCancelable = cancelable
             return this
         }
 

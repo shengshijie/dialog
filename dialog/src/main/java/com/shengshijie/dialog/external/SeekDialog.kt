@@ -11,6 +11,7 @@ class SeekDialog private constructor(builder: Builder) {
         builder.mSeekDialog ?: DefaultSeekDialogImpl(builder.context, builder.mDefaultProgress)
     var defaultProgress: Int = builder.mDefaultProgress
     var title: String? = builder.mTitle
+    var cancelable: Boolean = builder.mCancelable
     var positiveText: String? = builder.mPositiveText
     var negativeText: String? = builder.mNegativeText
     var onClickPositive: (ISeekDialog, index: Int) -> Unit = builder.mOnClickPositive
@@ -20,6 +21,7 @@ class SeekDialog private constructor(builder: Builder) {
     fun show() {
         mSeekDialog.apply {
             setTitle(title)
+            setCancelable(cancelable)
             setProgress(defaultProgress)
             setPositiveButton(positiveText, onClickPositive)
             setNegativeButton(negativeText, onClickNegative)
@@ -35,6 +37,8 @@ class SeekDialog private constructor(builder: Builder) {
     class Builder(val context: Context) {
 
         internal var mTitle: String? = null
+            private set
+        internal var mCancelable: Boolean = true
             private set
         internal var mDefaultProgress: Int = 0
             private set
@@ -101,6 +105,11 @@ class SeekDialog private constructor(builder: Builder) {
 
         fun setTitle(text: String?): Builder {
             mTitle = text
+            return this
+        }
+
+        fun setCancelable(cancelable: Boolean): Builder {
+            mCancelable = cancelable
             return this
         }
 

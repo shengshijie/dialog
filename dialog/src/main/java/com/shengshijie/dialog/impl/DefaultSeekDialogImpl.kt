@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.shengshijie.dialog.idialog.ISeekDialog
 import com.shengshijie.dialog.idialog.IDialog
+import java.lang.reflect.Field
 
 class DefaultSeekDialogImpl(context: Context, var defaultProgress: Int) :
     ISeekDialog {
@@ -90,7 +91,21 @@ class DefaultSeekDialogImpl(context: Context, var defaultProgress: Int) :
         seekDialog.setMessage(message)
     }
 
+    override fun setCancelable(cancelable: Boolean) {
+        seekDialog.setCancelable(cancelable)
+    }
+
     override fun show() {
+        try {
+            var field: Field? = seekDialog.javaClass.getDeclaredField("mAlert")
+            field?.isAccessible = true
+            val obj: Any? = field?.get(seekDialog)
+            field = obj?.javaClass?.getDeclaredField("mHandler")
+            field?.isAccessible = true
+            field?.set(obj, ButtonHandler(seekDialog))
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         seekDialog.show()
     }
 
